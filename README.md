@@ -1,84 +1,65 @@
-# CATO-Ping (`catoping.py`)
+# Universal AI README Generator (`readme_generator.py`)
 
-`catoping.py` ist ein leichtgewichtiges, kontinuierliches TCP-Ping-Skript in Python. Es misst die Netzwerklatenz auf spezifischen TCP-Ports (im Gegensatz zum herkömmlichen ICMP-Ping), führt automatische ASN- und rDNS-Abfragen durch und gibt die Ergebnisse farbig formatiert im Terminal aus.
+Der Universal AI README Generator ist ein leistungsstarkes Python-Skript, das mithilfe der Google Gemini API (Modell `gemini-3.5-flash-lite`) Code-Dateien oder ganze Projektverzeichnisse analysiert und automatisch eine extrem saubere, professionelle sowie vollständige `README.md`-Datei im Markdown-Format erstellt.
 
 ## Features
 
-* **Kontinuierlicher TCP-Ping:** Misst die Verbindungszeit in Millisekunden über beliebige TCP-Ports.
-* **ASN- & rDNS-Lookup:** Erkennt bei IP-Adressen automatisch die Organisation, das Autonomous System (ASN) oder den Reverse-DNS-Namen.
-* **Benutzerdefinierte Labels:** Erlaubt die Vergabe eigener Anzeigenamen für den Stream.
-* **Live-Statistiken:** Zeigt beim Beenden (via `Ctrl+C`) eine detaillierte Zusammenfassung der gesendeten/verlorenen Pakete sowie Durchschnitts-, Min- und Max-Latenzen an.
-* **Farbige Konsole:** Nutzt ANSI-Farbcodes mit dem Tag `[CATO-Ping]` für eine übersichtliche Darstellung unter Windows und Unix/Linux.
+* **KI-gestützte Analyse**: Nutzt das fortschrittliche Gemini-Modell, um den Code semantisch zu verstehen und eine präzise Dokumentation zu verfassen.
+* **Flexible Eingabequellen**: Unterstützt wahlweise die Analyse einzelner Dateien, ganzer Projektordner oder direktes Einfügen von Code im Terminal.
+* **Intelligentes Filtern**: Ignoriert beim Scannen von Ordnern automatisch irrelevante Verzeichnisse (wie `.git`, `venv`, `node_modules`) sowie Binär- und Mediendateien.
+* **Sichere API-Handhabung**: Liest den API-Key flexibel aus den Umgebungsvariablen (`GEMINI_API_KEY`) oder fragt diesen bei Bedarf interaktiv ab.
+* **Standardisiertes Format**: Generiert strukturierte Dokumentationen inklusive Voraussetzungen, Befehlszeilen-Argumenten, Praxis-Beispielen und Port-Tabellen.
 
 ## Voraussetzungen
 
-* Python 3.6 oder höher.
-* Keine externen Python-Bibliotheken erforderlich (nutzt ausschließlich Standardmodule).
-* System-Abhängigkeit: `nslookup` (wird standardmäßig für die ASN-Abfrage benötigt und ist auf den meisten Systemen vorinstalliert).
+* **Python**: Version 3.8 oder höher
+* **API-Key**: Ein gültiger Google Gemini API Key (`GEMINI_API_KEY`)
+* **Abhängigkeiten**: Das Skript verwendet ausschließlich Standardbibliotheken (`os`, `sys`, `json`, `urllib`, `pathlib`), es ist keine externe Installation (wie `requests`) via `pip` erforderlich.
 
 ## Verwendung
 
-Das Skript wird direkt über das Terminal ausgeführt:
+Das Skript wird direkt über das Terminal gestartet:
 
 ```bash
-python catoping.py <host> [Optionen]
+python readme_generator.py
 ```
 
-### Befehlszeilen-Argumente & Flags
+Beim Start werden Sie interaktiv gefragt, ob Sie einen ganzen Ordner, eine einzelne Datei oder Code direkt im Terminal einfügen möchten.
+
+## Befehlszeilen-Argumente & Flags
+
+Das Skript steuert den Ablauf über ein interaktives Terminal-Menü und benötigt im Standardaufruf keine direkten Kommandozeilen-Parameter.
 
 | Argument / Flag | Beschreibung | Standardwert |
 | :--- | :--- | :--- |
-| `<host>` | **[Erforderlich]** Ziel-Domain (z. B. `google.com`) oder IP-Adresse (z. B. `8.8.8.8`). | *Keiner* |
-| `-p`, `--port <port>` | Der zu testende TCP-Port. | `80` |
-| `-i`, `--interval <sec>` | Wartezeit in Sekunden zwischen den einzelnen Pings. | `1.0` |
-| `-t`, `--timeout <sec>` | Verbindungs-Timeout in Sekunden. | `2.0` |
-| `--no-lookup` | Überspringt die ASN- und rDNS-Abfrage (beschleunigt den Start). | `False` |
-| `--label <name>` | Vergibt ein benutzerdefiniertes Anzeigelabel für den Stream. | *Keines* |
+| `GEMINI_API_KEY` | Umgebungsvariable für den Google Gemini API Key | `None` (wird interaktiv abgefragt) |
 
 ## Beispiele
 
-1. **Standard-Ping (Port 80 / HTTP):**
-   ```bash
-   python catoping.py example.com
-   ```
+### 1. Gesamten Projektordner analysieren
+Wählen Sie im Menü Option `1`, um ein komplettes Verzeichnis einzulesen. Das Skript ignoriert dabei automatisch Cache- und Build-Ordner.
+```bash
+python readme_generator.py
+# Wählen Sie: 1
+# Pfad eingeben: /pfad/zu/ihrem/projekt
+```
 
-2. **SSH-Port prüfen (Port 22) alle 0.5 Sekunden:**
-   ```bash
-   python catoping.py 192.168.1.1 -p 22 -i 0.5
-   ```
+### 2. Einzelne Python-Datei dokumentieren
+Wählen Sie Option `2`, um gezielt eine einzelne Quellcode-Datei zu analysieren. Die erstellte `README.md` wird im selben Verzeichnis gespeichert.
+```bash
+python readme_generator.py
+# Wählen Sie: 2
+# Pfad eingeben: main.py
+```
 
-3. **Ping ohne DNS-/ASN-Lookups auf eine IP:**
-   ```bash
-   python catoping.py 8.8.8.8 --no-lookup
-   ```
-
-4. **Mit eigenem Label und erhöhtem Timeout:**
-   ```bash
-   python catoping.py 1.1.1.1 --label "Cloudflare-DNS" -t 5.0
-   ```
+### 3. Code direkt per Terminal übergeben
+Wählen Sie Option `3`, fügen Sie Ihren Code ein und beenden Sie die Eingabe in einer neuen Zeile mit dem Wort `END`.
+```bash
+python readme_generator.py
+# Wählen Sie: 3
+# Code einfügen -> END tippen und Enter drücken
+```
 
 ## Tool beenden
 
-Um die kontinuierliche Überprüfung zu stoppen und die Statistiken anzuzeigen, drücke im Terminal:
-
-```text
-Ctrl + C
-```
-
-## Gängige Ports für Dienste und Protokolle (Standard-Ports)
-
-Hier ist eine Übersicht nützlicher Ports, die du mit dem Parameter `-p` ansprechen kannst:
-
-| Dienst / Protokoll | Standard-Port | Beschreibung |
-| :--- | :--- | :--- |
-| **HTTP** | `80` | Unverschlüsselter Web-Traffic (Standard) |
-| **HTTPS** | `443` | Verschlüsselter Web-Traffic (SSL/TLS) |
-| **SSH** | `22` | Secure Shell für Remote-Server-Zugriff |
-| **FTP** | `21` | File Transfer Protocol (Steuerungsverbindung) |
-| **DNS** | `53` | Domain Name System |
-| **SMTP** | `25` | E-Mail-Versand (Simple Mail Transfer Protocol) |
-| **IMAP** | `143` | E-Mail-Abruf |
-| **MySQL** | `3306` | MySQL-Datenbankserver |
-| **PostgreSQL** | `5432` | PostgreSQL-Datenbankserver |
-| **Minecraft (Java)** | `25565` | Standard-Port für Minecraft-Server |
-| **FiveM (GTA V)** | `30120` | Standard-Port für FiveM Multiplayer-Server |
+Das Skript kann jederzeit während der Eingabe oder Ausführung mit der Tastenkombination `Ctrl + C` abgebrochen werden.
