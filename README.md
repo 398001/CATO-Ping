@@ -1,6 +1,6 @@
-# CATO-Ping (`catoping.py`)
+# CATO-Ping (`CATO-Ping`)
 
-`catoping.py` ist ein leichtgewichtiges, kontinuierliches TCP-Ping-Skript in Python. Es misst die Netzwerklatenz auf spezifischen TCP-Ports (im Gegensatz zum herkömmlichen ICMP-Ping), führt automatische ASN- und rDNS-Abfragen durch und gibt die Ergebnisse farbig formatiert im Terminal aus.
+`CATO-Ping` ist ein leichtgewichtiges, kontinuierliches TCP-Ping-Skript in Python. Es misst die Netzwerklatenz auf spezifischen TCP-Ports (im Gegensatz zum herkömmlichen ICMP-Ping), führt automatische ASN- und rDNS-Abfragen durch und gibt die Ergebnisse farbig formatiert im Terminal aus.
 
 ## Features
 
@@ -21,7 +21,7 @@
 Das Skript wird direkt über das Terminal ausgeführt:
 
 ```bash
-python catoping.py <host> [Optionen]
+python CATO-Ping <host> [Optionen]
 ```
 
 ### Befehlszeilen-Argumente & Flags
@@ -39,22 +39,22 @@ python catoping.py <host> [Optionen]
 
 1. **Standard-Ping (Port 80 / HTTP):**
    ```bash
-   python catoping.py example.com
+   python CATO-Ping example.com
    ```
 
 2. **SSH-Port prüfen (Port 22) alle 0.5 Sekunden:**
    ```bash
-   python catoping.py 192.168.1.1 -p 22 -i 0.5
+   python CATO-Ping 192.168.1.1 -p 22 -i 0.5
    ```
 
 3. **Ping ohne DNS-/ASN-Lookups auf eine IP:**
    ```bash
-   python catoping.py 8.8.8.8 --no-lookup
+   python CATO-Ping 8.8.8.8 --no-lookup
    ```
 
 4. **Mit eigenem Label und erhöhtem Timeout:**
    ```bash
-   python catoping.py 1.1.1.1 --label "Cloudflare-DNS" -t 5.0
+   python CATO-Ping 1.1.1.1 --label "Cloudflare-DNS" -t 5.0
    ```
 
 ## Tool beenden
